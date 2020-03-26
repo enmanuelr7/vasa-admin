@@ -1,3 +1,14 @@
-<input type="text" name="username" [(ngModel)]="username">
-<input type="password" name="password" [(ngModel)]="password">
-<button (click)="login()">login</button>
+
+<div class="row justify-content-center">
+    <div class="col-8 col-lg-3">
+        <h1 class="text-center mb-3">VASA</h1>
+        <form>
+            <label class="d-block" for="username">username</label>
+            <input class="d-block w-100 mb-2 login-input pl-2" type="text" name="usernmae" [(ngModel)]="username" id="username">
+            <label class="d-block" for="password">password</label>
+            <input class="d-block w-100 login-input pl-2" type="password" name="password" [(ngModel)]="password" id="password">
+            <button [disabled]="disableButton || !username || !password" class="d-block w-100 mt-4 login-btn" (click)="login()">login</button>
+            <span *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</span>
+        </form>
+    </div>
+</div>
