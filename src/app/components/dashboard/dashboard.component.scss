@@ -1,0 +1,50 @@
+div.logo {
+  font-size: 30px;
+}
+
+button.admin-btn {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  height: 30px;
+  outline: none;
+}
+
+button.admin-btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+input.blog-search {
+  height: 30px;
+  border: 1px solid #000;
+  outline: none;
+}
+
+a.table-btn {
+  color: #9c9c9c;
+  text-decoration: none;
+}
+
+a.table-btn:hover {
+  color: #000;
+}
+
+select.select-category {
+  height: 30px;
+  border: 1px solid #000;
+  outline: none;
+}
+
+button.search-category-btn {
+  height: 30px;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  outline: none;
+}
+
+button.search-category-btn:hover {
+  background-color: #000;
+  color: #fff;
+}

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private jwtHelper: JwtHelperService
+    private jwtHelper: JwtHelperService,
+    private router: Router
   ) { }
 
   logIn(username: string, password: string): Observable<any> {
@@ -38,5 +40,10 @@ export class AuthService {
       const token = localStorage.getItem('token');
       return !this.jwtHelper.isTokenExpired(token);
     }
+  }
+
+  logOut(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['login']);
   }
 }
