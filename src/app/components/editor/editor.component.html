@@ -1,3 +1,48 @@
-<button class="admin-btn" (click)="goToDashboard()">
-    Go Back
-</button>
+<div class="row">
+    <div class="col">
+        <div class="row no-gutters mt-3 align-items-center">
+            <div class="col logo">VASA</div>
+            <div class="col"><button class="float-right admin-btn" (click)="logout()">logout</button></div>
+        </div>
+
+        <button class="admin-btn my-4" (click)="goToDashboard()">Go Back</button>
+
+        <h5 class="mb-4">New Blog: {{ blog.title }}</h5>
+
+        <form>
+            <div class="row no-gutters">
+                <div class="col-12 col-lg-auto">
+                    <label for="title" class="d-block">Title</label>
+                    <input type="text" class="blog-title pl-2" [(ngModel)]="blog.title" name="title" id="title">
+
+                    <label for="category" class="d-block mt-2">Category</label>
+                    <select name="category" class="select-category" (change)="onChangeCategory($event)">
+                        <option *ngFor="let category of categories" value="{{category.id}}">{{ category.name }}
+                        </option>
+                    </select>
+
+                    <label for="image" class="d-block mt-2">Image</label>
+                    <input type="file" accept="image/png, image/jpeg" class="d-none" (change)="onFileSelected($event)"
+                        name="image" id="image">
+                    <label for="image" name="image" class="image-select"><i class="fas fa-camera-retro"></i></label>
+                    <span *ngIf="!blog.image" class="ml-2">no file selected</span>
+                    <span *ngIf="blog.image"
+                        class="ml-2">{{ blog.image.name.length>15 ? (blog.image.name | slice:0:15) + '...' : (blog.image.name) }}</span>
+                </div>
+
+                <div class="col ml-lg-5">
+                    <label for="content" class="d-block mt-2 mt-lg-0">Content</label>
+                    <textarea class="w-100 blog-content" [(ngModel)]="blog.content" name="content" id="content"
+                        cols="30" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col">
+                    <button [disabled]="disableButton" class="admin-btn float-right" (click)="postBlog()">Post</button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>

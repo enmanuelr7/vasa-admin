@@ -10,7 +10,7 @@ import { EditorComponent } from './components/editor/editor.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuardService] },
-  { path: 'editor', component: EditorComponent }
+  { path: 'editor', component: EditorComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({

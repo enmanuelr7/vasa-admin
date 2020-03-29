@@ -1,12 +1,30 @@
-button.admin-btn {
-    background-color: #fff;
-    color: #000;
-    border: 1px solid #000;
-    height: 30px;
-    outline: none;
-  }
-  
-  button.admin-btn:hover {
-    background-color: #000;
-    color: #fff;
-  }
+div.logo {
+  font-size: 30px;
+}
+
+select.select-category {
+  height: 30px;
+  border: 1px solid #000;
+  outline: none;
+}
+
+input.blog-title {
+  border: 1px solid #000;
+  outline: none;
+  height: 30px;
+}
+
+textarea.blog-content {
+  border: 1px solid #000;
+  outline: none;
+}
+
+label.image-select {
+  cursor: pointer;
+}
+
+button.admin-btn:disabled{
+  border-color: #9c9c9c;
+  color: #9c9c9c;
+  background-color: #fff;
+}
