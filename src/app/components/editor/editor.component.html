@@ -13,28 +13,41 @@
             <div class="row no-gutters">
                 <div class="col-12 col-lg-auto">
                     <label for="title" class="d-block">Title</label>
-                    <input type="text" class="blog-title pl-2" [(ngModel)]="blog.title" name="title" id="title">
+                    <input type="text" class="blog-title pl-2" (input)="onTitleInput()" [(ngModel)]="blog.title" name="title" id="title">
+                    <div *ngIf="errors.title">
+                        <div class="validation-err">{{ errors.title }}</div>
+                    </div>
 
                     <label for="category" class="d-block mt-2">Category</label>
-                    <select name="category" class="select-category" (change)="onChangeCategory($event)">
+                    <select name="category" class="select-category" (change)="onCategorySelected($event)">
                         <option *ngFor="let category of categories" value="{{category.id}}">{{ category.name }}
                         </option>
                     </select>
+                    <div *ngIf="errors.category">
+                        <div class="validation-err">{{ errors.category }}</div>
+                    </div>
 
                     <label for="image" class="d-block mt-2">Image</label>
                     <input type="file" accept="image/png, image/jpeg" class="d-none" (change)="onFileSelected($event)"
                         name="image" id="image">
-                    <label for="image" name="image" class="image-select"><i class="fas fa-camera-retro"></i></label>
+                    <label for="image" name="image" class="image-select mb-0"><i class="fas fa-camera-retro"></i></label>
                     <span *ngIf="!blog.image" class="ml-2">no file selected</span>
                     <span *ngIf="blog.image"
                         class="ml-2">{{ blog.image.name.length>15 ? (blog.image.name | slice:0:15) + '...' : (blog.image.name) }}</span>
+                    <div *ngIf="errors.image">
+                        <div class="validation-err">{{ errors.image }}</div>
+                    </div>
                 </div>
 
                 <div class="col ml-lg-5">
                     <label for="content" class="d-block mt-2 mt-lg-0">Content</label>
-                    <textarea class="w-100 blog-content" [(ngModel)]="blog.content" name="content" id="content"
+                    <textarea class="w-100 blog-content" (input)="onContentInput()" [(ngModel)]="blog.content" name="content" id="content"
                         cols="30" rows="10"></textarea>
+                    <div *ngIf="errors.content">
+                        <div class="validation-err">{{ errors.content }}</div>
+                    </div>
                 </div>
+
             </div>
             <div class="row no-gutters">
                 <div class="col">

@@ -25,6 +25,13 @@ export class EditorComponent implements OnInit {
     { name: 'mente', id: 4 }
   ];
 
+  errors = {
+    image: '',
+    title: '',
+    content: '',
+    category: ''
+  };
+
   selectedCategory: any;
   disableButton = false;
 
@@ -43,37 +50,109 @@ export class EditorComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  onChangeCategory(e: any): void {
+  logout(): void {
+    this.auth.logOut();
+  }
+
+  postBlog(): void {
+    this.disableButton = true;
+    this.checkErrors();
+    if (
+      this.checkTitleErrors() &&
+      this.checkCategoryErrors() &&
+      this.checkImageErrors() &&
+      this.checkContentErrors()
+    ) {
+      const blogData = new FormData();
+      blogData.append('image', this.blog.image);
+      blogData.append('categoryId', this.blog.categoryId);
+      blogData.append('content', this.blog.content);
+      blogData.append('title', this.blog.title);
+      this.blogService.postBlog(blogData).subscribe(res => {
+        console.log(res);
+        this.router.navigate(['']);
+      }, err => {
+        console.log(err.message);
+        this.disableButton = false;
+      });
+    } else {
+      this.disableButton = false;
+    }
+  }
+
+  onTitleInput() {
+    this.checkTitleErrors();
+  }
+
+  onCategorySelected(e: any) {
     this.selectedCategory = this.categories.find(c =>
       c.id === parseInt(e.target.value, null)
     );
     this.blog.categoryId = this.selectedCategory.id;
-  }
-
-  logout(): void {
-    this.auth.logOut();
+    this.checkCategoryErrors();
   }
 
   onFileSelected(event) {
     if (event.target.files.length > 0) {
       this.blog.image = event.target.files[0];
     }
+    this.checkImageErrors();
   }
 
-  postBlog(): void {
-    this.disableButton = true;
-    const blogData = new FormData();
-    blogData.append('image', this.blog.image);
-    blogData.append('categoryId', this.blog.categoryId);
-    blogData.append('content', this.blog.content);
-    blogData.append('title', this.blog.title);
-    this.blogService.postBlog(blogData).subscribe(res => {
-      console.log(res);
-      this.router.navigate(['']);
-    }, err => {
-      console.log(err);
-      this.disableButton = false;
-    });
+  onContentInput() {
+    this.checkContentErrors();
+  }
+
+  checkTitleErrors(): boolean {
+    this.errors.title = '';
+    if (!this.blog.title.length) {
+      this.errors.title = 'title cannot be empty';
+      return false;
+    } else if (this.blog.title.length > 100) {
+      this.errors.title = 'title cannot exceed 100 characters long';
+      return false;
+    }
+    return true;
+  }
+
+  checkCategoryErrors(): boolean {
+    this.errors.category = '';
+    if (!this.blog.categoryId) {
+      this.errors.category = 'you must select a category';
+      return false;
+    }
+    return true;
+  }
+
+  checkImageErrors(): boolean {
+    this.errors.image = '';
+    if (!this.blog.image) {
+      this.errors.image = 'you must select an image';
+      return false;
+    } else if (this.blog.image.type !== 'image/jpeg' && this.blog.image.type !== 'image/png') {
+      this.errors.image = 'file must be of type image';
+      return false;
+    } else if (this.blog.image.size >= 2000000) {
+      this.errors.image = 'image cannot exceed 2 MB';
+      return false;
+    }
+    return true;
+  }
+
+  checkContentErrors(): boolean {
+    this.errors.content = '';
+    if (!this.blog.content) {
+      this.errors.content = 'content cannot be empty';
+      return false;
+    }
+    return true;
+  }
+
+  checkErrors(): void {
+    this.checkTitleErrors();
+    this.checkCategoryErrors();
+    this.checkImageErrors();
+    this.checkContentErrors();
   }
 
 }
