@@ -21,7 +21,7 @@
             </div>
             <div class="col-12 col-lg-auto">
 
-                <select name="categories" class="ml-lg-2 mt-2 mt-lg-0 select-category" (change)="onChangeCategory($event)">
+                <select *ngIf="categories" name="categories" class="ml-lg-2 mt-2 mt-lg-0 select-category" (change)="onChangeCategory($event)">
                     <option *ngFor="let category of categories" value="{{category.id}}">{{ category.name }}</option>
                 </select>
 

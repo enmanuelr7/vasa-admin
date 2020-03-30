@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { Blog } from 'src/app/models/Blog';
 import { BlogService } from 'src/app/services/blog.service';
+import { CategoryService } from 'src/app/services/category.service';
 
 
 @Component({
@@ -16,23 +17,21 @@ export class DashboardComponent implements OnInit {
   filteredBlogs: Blog[];
   filter = '';
 
-  categories = [
-    { name: 'Todas Las Categorías', id: 0 },
-    { name: 'belleza', id: 1 },
-    { name: 'fitness', id: 2 },
-    { name: 'comida', id: 3 },
-    { name: 'mente', id: 4 }
-  ];
+  categories = [{id: 0, name: 'categoría'}];
   selectedCategory: any;
 
   constructor(
     private router: Router,
     private auth: AuthService,
-    private blogService: BlogService
+    private blogService: BlogService,
+    private categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
-    this.selectedCategory = this.categories[0];
+    this.categoryService.getCategories().subscribe(res => {
+      this.categories = this.categories.concat(res);
+      this.selectedCategory = this.categories[0];
+    });
     this.blogService.getBlogs().subscribe(res => {
       this.blogs = res;
       this.filteredBlogs = res;
@@ -40,11 +39,9 @@ export class DashboardComponent implements OnInit {
   }
 
   filterInput(): void {
-    console.log(this.filter);
     this.filteredBlogs = this.blogs.filter(b =>
       b.title.toLowerCase().indexOf(this.filter.toLowerCase()) > -1
     );
-    console.log(this.filteredBlogs);
   }
 
   logout(): void {
@@ -66,15 +63,13 @@ export class DashboardComponent implements OnInit {
   }
 
   searchByCategory(): void {
-    console.log(this.selectedCategory.value);
+    console.log(this.selectedCategory.id);
   }
 
   onChangeCategory(e: any): void {
-
     this.selectedCategory = this.categories.find(x =>
       x.id === parseInt(e.target.value, null)
     );
-
   }
 
 }

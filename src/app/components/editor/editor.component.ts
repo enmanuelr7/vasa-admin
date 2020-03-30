@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { BlogService } from 'src/app/services/blog.service';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-editor',
@@ -17,13 +18,7 @@ export class EditorComponent implements OnInit {
     categoryId: 0,
   };
 
-  categories = [
-    { name: 'Seleccionar categoría', id: 0 },
-    { name: 'belleza', id: 1 },
-    { name: 'fitness', id: 2 },
-    { name: 'comida', id: 3 },
-    { name: 'mente', id: 4 }
-  ];
+  categories = [{ id: 0, name: 'Seleccionar categoría' }];
 
   errors = {
     image: '',
@@ -39,11 +34,15 @@ export class EditorComponent implements OnInit {
   constructor(
     private router: Router,
     private auth: AuthService,
-    private blogService: BlogService
+    private blogService: BlogService,
+    private categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
-    this.selectedCategory = this.categories[0];
+    this.categoryService.getCategories().subscribe(res => {
+      this.categories = this.categories.concat(res);
+      this.selectedCategory = this.categories[0];
+    });
   }
 
   goToDashboard(): void {
@@ -68,8 +67,7 @@ export class EditorComponent implements OnInit {
       blogData.append('categoryId', this.blog.categoryId);
       blogData.append('content', this.blog.content);
       blogData.append('title', this.blog.title);
-      this.blogService.postBlog(blogData).subscribe(res => {
-        console.log(res);
+      this.blogService.postBlog(blogData).subscribe(() => {
         this.router.navigate(['']);
       }, err => {
         console.log(err.message);
