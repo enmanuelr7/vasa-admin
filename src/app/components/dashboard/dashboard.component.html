@@ -22,7 +22,7 @@
             <div class="col-12 col-lg-auto">
 
                 <select name="categories" class="ml-lg-2 mt-2 mt-lg-0 select-category" (change)="onChangeCategory($event)">
-                    <option *ngFor="let category of categories" value="{{category.value}}">{{ category.title }}</option>
+                    <option *ngFor="let category of categories" value="{{category.id}}">{{ category.name }}</option>
                 </select>
 
                 <button class="search-category-btn ml-2 mt-2 mt-lg-0" (click)="searchByCategory()"><i

@@ -17,11 +17,11 @@ export class DashboardComponent implements OnInit {
   filter = '';
 
   categories = [
-    { title: 'Todas Las Categorías', value: 0 },
-    { title: 'belleza', value: 1 },
-    { title: 'fitness', value: 2 },
-    { title: 'comida', value: 3 },
-    { title: 'mente', value: 4 }
+    { name: 'Todas Las Categorías', id: 0 },
+    { name: 'belleza', id: 1 },
+    { name: 'fitness', id: 2 },
+    { name: 'comida', id: 3 },
+    { name: 'mente', id: 4 }
   ];
   selectedCategory: any;
 
@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
   onChangeCategory(e: any): void {
 
     this.selectedCategory = this.categories.find(x =>
-      x.value === parseInt(e.target.value, null)
+      x.id === parseInt(e.target.value, null)
     );
 
   }
