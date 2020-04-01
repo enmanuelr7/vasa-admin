@@ -20,7 +20,7 @@
 
                     <label for="category" class="d-block mt-2">Category</label>
                     <select name="category" class="select-category" (change)="onCategorySelected($event)">
-                        <option *ngFor="let category of categories" value="{{category.id}}">{{ category.name }}
+                        <option *ngFor="let category of categories" value="{{category.name}}">{{ category.name }}
                         </option>
                     </select>
                     <div *ngIf="errors.category">

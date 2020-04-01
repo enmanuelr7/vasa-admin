@@ -10,13 +10,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { EditorComponent } from './components/editor/editor.component';
+import { ReplaceDashPipe } from './pipes/replace-dash.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    EditorComponent
+    EditorComponent,
+    ReplaceDashPipe
   ],
   imports: [
     BrowserModule,

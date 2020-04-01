@@ -22,7 +22,7 @@
             <div class="col-12 col-lg-auto">
 
                 <select *ngIf="categories" name="categories" class="ml-lg-2 mt-2 mt-lg-0 select-category" (change)="onChangeCategory($event)">
-                    <option *ngFor="let category of categories" value="{{category.id}}">{{ category.name }}</option>
+                    <option *ngFor="let category of categories" value="{{category.name}}">{{ category.name }}</option>
                 </select>
 
                 <button class="search-category-btn ml-2 mt-2 mt-lg-0" (click)="searchByCategory()"><i
@@ -48,10 +48,10 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let blog of filteredBlogs">
-                            <th scope="row">{{ blog.title }}</th>
+                            <th scope="row">{{ blog.title | replaceDash }}</th>
                             <td>{{ blog.createdAt | date }}</td>
                             <td>{{ blog.updatedAt | date}}</td>
-                            <td><a href="#" (click)="deleteBlog(blog.id)" class="table-btn"><i
+                            <td><a href="#" (click)="deleteBlog(blog.title)" class="table-btn"><i
                                         class="fas fa-trash-alt"></i></a></td>
                             <td><a href="#" class="table-btn"><i class="fas fa-pencil-alt"></i></a></td>
                         </tr>

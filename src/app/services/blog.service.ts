@@ -25,12 +25,12 @@ export class BlogService {
     return this.http.get<Blog[]>(this.baseUrl + '/blogs/');
   }
 
-  getBlog(id: string): Observable<Blog> {
-    return this.http.get<Blog>(this.baseUrl + '/blogs/' + id);
+  getBlog(title: string): Observable<Blog> {
+    return this.http.get<Blog>(this.baseUrl + '/blogs/' + title);
   }
 
-  deleteBlog(id: number): Observable<any> {
-    return this.http.delete<Blog>(this.baseUrl + '/blogs/' + id, this.httpOptions);
+  deleteBlog(title: string): Observable<any> {
+    return this.http.delete<Blog>(this.baseUrl + '/blogs/' + title, this.httpOptions);
   }
 
   postBlog(blog: any): Observable<any> {

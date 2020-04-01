@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   filteredBlogs: Blog[];
   filter = '';
 
-  categories = [{id: 0, name: 'categoría'}];
+  categories = [{name: 'all categories'}];
   selectedCategory: any;
 
   constructor(
@@ -48,9 +48,9 @@ export class DashboardComponent implements OnInit {
     this.auth.logOut();
   }
 
-  deleteBlog(id: number) {
+  deleteBlog(title: string) {
     if (confirm('are you sure you want to delete?') && this.auth.isLogged()) {
-      this.blogService.deleteBlog(id).subscribe(() => {
+      this.blogService.deleteBlog(title).subscribe(() => {
         window.location.reload();
       }, () => {
         alert('ha ocurrido un error, inténtalo más tarde');
@@ -63,12 +63,12 @@ export class DashboardComponent implements OnInit {
   }
 
   searchByCategory(): void {
-    console.log(this.selectedCategory.id);
+    console.log(this.selectedCategory.name);
   }
 
   onChangeCategory(e: any): void {
     this.selectedCategory = this.categories.find(x =>
-      x.id === parseInt(e.target.value, null)
+      x.name === e.target.value
     );
   }
 

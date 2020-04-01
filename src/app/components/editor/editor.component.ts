@@ -15,10 +15,10 @@ export class EditorComponent implements OnInit {
     title: '',
     image: '',
     content: '',
-    categoryId: 0,
+    categoryName: 'select category',
   };
 
-  categories = [{ id: 0, name: 'Seleccionar categoría' }];
+  categories = [{ name: 'select category' }];
 
   errors = {
     image: '',
@@ -62,11 +62,12 @@ export class EditorComponent implements OnInit {
       this.checkImageErrors() &&
       this.checkContentErrors()
     ) {
+      const dashTitle = this.blog.title.replace(/ /g, '-');
       const blogData = new FormData();
       blogData.append('image', this.blog.image);
-      blogData.append('categoryId', this.blog.categoryId);
+      blogData.append('categoryName', this.blog.categoryName);
       blogData.append('content', this.blog.content);
-      blogData.append('title', this.blog.title);
+      blogData.append('title', dashTitle);
       this.blogService.postBlog(blogData).subscribe(() => {
         this.router.navigate(['']);
       }, err => {
@@ -84,9 +85,9 @@ export class EditorComponent implements OnInit {
 
   onCategorySelected(e: any) {
     this.selectedCategory = this.categories.find(c =>
-      c.id === parseInt(e.target.value, null)
+      c.name === e.target.value
     );
-    this.blog.categoryId = this.selectedCategory.id;
+    this.blog.categoryName = this.selectedCategory.name;
     this.checkCategoryErrors();
   }
 
@@ -106,8 +107,8 @@ export class EditorComponent implements OnInit {
     if (!this.blog.title.length) {
       this.errors.title = 'title cannot be empty';
       return false;
-    } else if (this.blog.title.length > 100) {
-      this.errors.title = 'title cannot exceed 100 characters long';
+    } else if (this.blog.title.length > 200) {
+      this.errors.title = 'title cannot exceed 200 characters long';
       return false;
     }
     return true;
@@ -115,7 +116,7 @@ export class EditorComponent implements OnInit {
 
   checkCategoryErrors(): boolean {
     this.errors.category = '';
-    if (!this.blog.categoryId) {
+    if (this.blog.categoryName === 'select category') {
       this.errors.category = 'you must select a category';
       return false;
     }
