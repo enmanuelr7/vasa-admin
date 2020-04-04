@@ -39,9 +39,15 @@ export class EditorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.fetchAllCategories();
+  }
+
+  fetchAllCategories(): void {
     this.categoryService.getCategories().subscribe(res => {
       this.categories = this.categories.concat(res);
       this.selectedCategory = this.categories[0];
+    }, err => {
+      console.error(err);
     });
   }
 

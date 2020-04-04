@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   filteredBlogs: Blog[];
   filter = '';
 
-  categories = [{name: 'all categories'}];
+  categories = [{ name: 'all categories' }];
   selectedCategory: any;
 
   constructor(
@@ -28,13 +28,25 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.fetchAllCategories();
+    this.fetchAllBlogs();
+  }
+
+  fetchAllCategories(): void {
     this.categoryService.getCategories().subscribe(res => {
       this.categories = this.categories.concat(res);
       this.selectedCategory = this.categories[0];
+    }, err => {
+      console.error(err);
     });
+  }
+
+  fetchAllBlogs(): void {
     this.blogService.getBlogs().subscribe(res => {
       this.blogs = res;
       this.filteredBlogs = res;
+    }, err => {
+      console.error(err);
     });
   }
 
@@ -52,8 +64,9 @@ export class DashboardComponent implements OnInit {
     if (confirm('are you sure you want to delete?') && this.auth.isLogged()) {
       this.blogService.deleteBlog(title).subscribe(() => {
         window.location.reload();
-      }, () => {
+      }, err => {
         alert('ha ocurrido un error, inténtalo más tarde');
+        console.error(err);
       });
     }
   }
@@ -63,7 +76,16 @@ export class DashboardComponent implements OnInit {
   }
 
   searchByCategory(): void {
-    console.log(this.selectedCategory.name);
+    if (this.selectedCategory.name === 'all categories') {
+      this.fetchAllBlogs();
+    } else {
+      this.blogService.getBlogsByCategoryName(this.selectedCategory.name).subscribe(res => {
+        this.blogs = res;
+        this.filteredBlogs = res;
+      }, err => {
+        console.error(err);
+      });
+    }
   }
 
   onChangeCategory(e: any): void {

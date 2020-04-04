@@ -37,4 +37,8 @@ export class BlogService {
     return this.http.post(this.baseUrl + '/blogs/', blog, this.httpOptions);
   }
 
+  getBlogsByCategoryName(categoryName: string): Observable<Blog[]> {
+    return this.http.get<Blog[]>(this.baseUrl + '/blogs/byCategory/' + categoryName);
+  }
+
 }
