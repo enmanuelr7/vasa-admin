@@ -54,7 +54,7 @@
                             <td>{{ blog.updatedAt | date}}</td>
                             <td><a href="#" (click)="deleteBlog(blog.title)" class="table-btn"><i
                                         class="fas fa-trash-alt"></i></a></td>
-                            <td><a href="#" class="table-btn"><i class="fas fa-pencil-alt"></i></a></td>
+                            <td><a [routerLink]="['/editor', blog.title]" class="table-btn"><i class="fas fa-pencil-alt"></i></a></td>
                         </tr>
                         <tr *ngIf="!filteredBlogs.length">
                             <td colspan="5" class="text-center">

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { BlogService } from 'src/app/services/blog.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-editor',
@@ -35,20 +36,35 @@ export class EditorComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     private blogService: BlogService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.fetchAllCategories();
+    this.checkEditOrCreate();
   }
 
   fetchAllCategories(): void {
     this.categoryService.getCategories().subscribe(res => {
       this.categories = this.categories.concat(res);
-      this.selectedCategory = this.categories[0];
     }, err => {
       console.error(err);
     });
+  }
+
+  checkEditOrCreate(): void {
+    const blogTitle = this.route.snapshot.params.title;
+    if (blogTitle) {
+      this.blogService.getBlog(blogTitle).subscribe(res => {
+        this.blog = res;
+        this.selectedCategory = this.categories.find(category => category.name === this.blog.categoryName);
+      }, err => {
+        console.error(err);
+      });
+    } else {
+      this.selectedCategory = this.categories[0];
+    }
   }
 
   goToDashboard(): void {
@@ -108,6 +124,13 @@ export class EditorComponent implements OnInit {
     this.checkContentErrors();
   }
 
+  checkErrors(): void {
+    this.checkTitleErrors();
+    this.checkCategoryErrors();
+    this.checkImageErrors();
+    this.checkContentErrors();
+  }
+
   checkTitleErrors(): boolean {
     this.errors.title = '';
     if (!this.blog.title.length) {
@@ -151,13 +174,6 @@ export class EditorComponent implements OnInit {
       return false;
     }
     return true;
-  }
-
-  checkErrors(): void {
-    this.checkTitleErrors();
-    this.checkCategoryErrors();
-    this.checkImageErrors();
-    this.checkContentErrors();
   }
 
 }
