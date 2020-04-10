@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class EditorComponent implements OnInit {
 
+
   blog: any = {
     title: '',
     image: '',
@@ -30,7 +31,9 @@ export class EditorComponent implements OnInit {
 
   selectedCategory: any;
   disableButton = false;
-
+  imagePreview: any;
+  isEdition: boolean;
+  hastoCheckImage: boolean;
 
   constructor(
     private router: Router,
@@ -56,14 +59,18 @@ export class EditorComponent implements OnInit {
   checkEditOrCreate(): void {
     const blogTitle = this.route.snapshot.params.title;
     if (blogTitle) {
+      this.isEdition = true;
+      this.hastoCheckImage = false;
       this.blogService.getBlog(blogTitle).subscribe(res => {
         this.blog = res;
+        this.imagePreview = this.blog.imageUrl;
         this.selectedCategory = this.categories.find(category => category.name === this.blog.categoryName);
       }, err => {
         console.error(err);
       });
     } else {
       this.selectedCategory = this.categories[0];
+      this.isEdition = false;
     }
   }
 
@@ -78,26 +85,78 @@ export class EditorComponent implements OnInit {
   postBlog(): void {
     this.disableButton = true;
     this.checkErrors();
-    if (
-      this.checkTitleErrors() &&
-      this.checkCategoryErrors() &&
-      this.checkImageErrors() &&
-      this.checkContentErrors()
-    ) {
-      const dashTitle = this.blog.title.replace(/ /g, '-');
-      const blogData = new FormData();
-      blogData.append('image', this.blog.image);
-      blogData.append('categoryName', this.blog.categoryName);
-      blogData.append('content', this.blog.content);
-      blogData.append('title', dashTitle);
-      this.blogService.postBlog(blogData).subscribe(() => {
-        this.router.navigate(['']);
-      }, err => {
-        console.log(err.message);
+    if (this.isEdition && this.hastoCheckImage) {
+
+      if (
+        this.checkTitleErrors() &&
+        this.checkCategoryErrors() &&
+        this.checkImageErrors() &&
+        this.checkContentErrors()
+      ) {
+        const dashTitle = this.blog.title.replace(/ /g, '-');
+        const blogData = new FormData();
+        blogData.append('image', this.blog.image);
+        blogData.append('categoryName', this.blog.categoryName);
+        blogData.append('content', this.blog.content);
+        blogData.append('title', dashTitle);
+        this.blogService.updateBlog(this.blog.title, blogData).subscribe(() => {
+          this.router.navigate(['']);
+        }, err => {
+          console.log(err.message);
+          this.disableButton = false;
+        });
+      } else {
         this.disableButton = false;
-      });
+      }
+
+
+    } else if (this.isEdition && !this.hastoCheckImage) {
+      if (
+        this.checkTitleErrors() &&
+        this.checkCategoryErrors() &&
+        this.checkContentErrors()
+      ) {
+        const dashTitle = this.blog.title.replace(/ /g, '-');
+        const blogData = new FormData();
+
+        blogData.append('categoryName', this.blog.categoryName);
+        blogData.append('content', this.blog.content);
+        blogData.append('title', dashTitle);
+        this.blogService.updateBlog(this.blog.title, blogData).subscribe(() => {
+          this.router.navigate(['']);
+        }, err => {
+          console.log(err.message);
+          this.disableButton = false;
+        });
+      } else {
+        this.disableButton = false;
+      }
+
     } else {
-      this.disableButton = false;
+
+      if (
+        this.checkTitleErrors() &&
+        this.checkCategoryErrors() &&
+        this.checkImageErrors() &&
+        this.checkContentErrors()
+      ) {
+        const dashTitle = this.blog.title.replace(/ /g, '-');
+        const blogData = new FormData();
+        blogData.append('image', this.blog.image);
+        blogData.append('categoryName', this.blog.categoryName);
+        blogData.append('content', this.blog.content);
+        blogData.append('title', dashTitle);
+        this.blogService.postBlog(blogData).subscribe(() => {
+          this.router.navigate(['']);
+        }, err => {
+          console.log(err.message);
+          this.disableButton = false;
+        });
+      } else {
+        this.disableButton = false;
+      }
+
+
     }
   }
 
@@ -116,6 +175,15 @@ export class EditorComponent implements OnInit {
   onFileSelected(event) {
     if (event.target.files.length > 0) {
       this.blog.image = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      console.log(this.imagePreview);
+    }
+    if (this.isEdition) {
+      this.hastoCheckImage = true;
     }
     this.checkImageErrors();
   }

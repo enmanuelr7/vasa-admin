@@ -20,9 +20,10 @@
                     </div>
 
                     <label for="category" class="d-block mt-2">Category</label>
-                    <select *ngIf="selectedCategory" name="category" class="select-category" (change)="onCategorySelected($event)">
+                    <select *ngIf="selectedCategory" name="category" class="select-category"
+                        (change)="onCategorySelected($event)">
                         <option *ngFor="let category of categories" value="{{category.name}}"
-                        [selected]="category.name === selectedCategory.name ? 'true' : null">{{ category.name }}
+                            [selected]="category.name === selectedCategory.name ? 'true' : null">{{ category.name }}
                         </option>
                     </select>
                     <div *ngIf="errors.category">
@@ -34,14 +35,16 @@
                         name="image" id="image">
                     <label for="image" name="image" class="image-select mb-0"><i
                             class="fas fa-camera-retro"></i></label>
-                    <span *ngIf="!blog.image" class="ml-2">no file selected</span>
+                    <span *ngIf="!imagePreview" class="ml-2">no file selected</span>
                     <span *ngIf="blog.image"
                         class="ml-2">{{ blog.image.name.length>15 ? (blog.image.name | slice:0:15) + '...' : (blog.image.name) }}</span>
                     <div *ngIf="errors.image">
                         <div class="validation-err">{{ errors.image }}</div>
                     </div>
-                </div>
 
+                    <img *ngIf="imagePreview" [src]="imagePreview" alt="Image Preview" class="img-preview d-block">
+
+                </div>
                 <div class="col ml-lg-5">
                     <label for="content" class="d-block mt-2 mt-lg-0">Content</label>
                     <textarea class="w-100 blog-content" (input)="onContentInput()" [(ngModel)]="blog.content"
@@ -52,6 +55,8 @@
                 </div>
 
             </div>
+
+
             <div class="row no-gutters mb-5">
                 <div class="col">
                     <button [disabled]="disableButton" class="admin-btn float-right" (click)="postBlog()">Post</button>

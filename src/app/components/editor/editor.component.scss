@@ -23,7 +23,7 @@ label.image-select {
   cursor: pointer;
 }
 
-button.admin-btn:disabled{
+button.admin-btn:disabled {
   border-color: #9c9c9c;
   color: #9c9c9c;
   background-color: #fff;
@@ -32,4 +32,8 @@ button.admin-btn:disabled{
 div.validation-err {
   font-size: 10px;
   color: red;
+}
+
+img.img-preview {
+  width: 100px;
 }
