@@ -7,13 +7,14 @@
 
         <button class="admin-btn my-4" (click)="goToDashboard()">Go Back</button>
 
-        <h5 class="mb-4">New Blog: {{ blog.title }}</h5>
+        <h5 class="mb-4">Blog title: {{ blog.title }}</h5>
 
         <form>
             <div class="row no-gutters">
                 <div class="col-12 col-lg-auto">
                     <label for="title" class="d-block">Title</label>
-                    <input type="text" class="blog-title pl-2" (input)="onTitleInput()" [(ngModel)]="blog.title"
+                    <input type="text" class="blog-title pl-2" (input)="onTitleInput()"
+                        [ngModel]="blog.title | replaceDash" (ngModelChange)="blog.title=$event" type="text"
                         name="title" id="title">
                     <div *ngIf="errors.title">
                         <div class="validation-err">{{ errors.title }}</div>

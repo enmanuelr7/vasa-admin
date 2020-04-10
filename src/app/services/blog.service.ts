@@ -41,8 +41,8 @@ export class BlogService {
     return this.http.get<Blog[]>(this.baseUrl + '/blogs/byCategory/' + categoryName);
   }
 
-  updateBlog(blogTitle: string, blog: any): Observable<any> {
-    return this.http.put(this.baseUrl + '/blogs/' + blogTitle, blog, this.httpOptions);
+  updateBlog(blogId: number, blog: any): Observable<any> {
+    return this.http.put(this.baseUrl + '/blogs/' + blogId, blog, this.httpOptions);
   }
 
 }

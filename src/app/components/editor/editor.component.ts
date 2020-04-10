@@ -84,7 +84,6 @@ export class EditorComponent implements OnInit {
 
   postBlog(): void {
     this.disableButton = true;
-    this.checkErrors();
     if (this.isEdition && this.hastoCheckImage) {
 
       if (
@@ -99,7 +98,7 @@ export class EditorComponent implements OnInit {
         blogData.append('categoryName', this.blog.categoryName);
         blogData.append('content', this.blog.content);
         blogData.append('title', dashTitle);
-        this.blogService.updateBlog(this.blog.title, blogData).subscribe(() => {
+        this.blogService.updateBlog(this.blog.id, blogData).subscribe(() => {
           this.router.navigate(['']);
         }, err => {
           console.log(err.message);
@@ -122,7 +121,7 @@ export class EditorComponent implements OnInit {
         blogData.append('categoryName', this.blog.categoryName);
         blogData.append('content', this.blog.content);
         blogData.append('title', dashTitle);
-        this.blogService.updateBlog(this.blog.title, blogData).subscribe(() => {
+        this.blogService.updateBlog(this.blog.id, blogData).subscribe(() => {
           this.router.navigate(['']);
         }, err => {
           console.log(err.message);
@@ -133,7 +132,7 @@ export class EditorComponent implements OnInit {
       }
 
     } else {
-
+      this.checkErrors();
       if (
         this.checkTitleErrors() &&
         this.checkCategoryErrors() &&
@@ -180,7 +179,6 @@ export class EditorComponent implements OnInit {
       reader.onload = () => {
         this.imagePreview = reader.result;
       };
-      console.log(this.imagePreview);
     }
     if (this.isEdition) {
       this.hastoCheckImage = true;
