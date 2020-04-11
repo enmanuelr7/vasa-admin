@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   username = '';
   password = '';
   errorMessage = '';
-  disableButton: boolean;
+  disableForm: boolean;
 
 
   constructor(private auth: AuthService, private router: Router) { }
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.disableButton = true;
+    this.disableForm = true;
     this.auth.logIn(this.username, this.password).subscribe(res => {
 
       if (res.token) {
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
       }
     }, err => {
       this.errorMessage = err.error.message;
-      this.disableButton = false;
+      this.disableForm = false;
     });
   }
 }
